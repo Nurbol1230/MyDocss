@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Мои документы</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body{font-family:Arial;margin:0;}
+.sidebar{
+  width:300px;
+  height:100vh;
+  background:#0f172a;
+  color:white;
+  position:fixed;
+  padding:15px;
+  transition:0.3s;
+  overflow-y:auto; /* добавили скролл */
+}
+.hidden{left:-320px;}
+.content{margin-left:320px;padding:20px;}
+.file{background:#1e293b;margin:10px 0;padding:10px;border-radius:10px;}
+button{margin-top:5px;cursor:pointer;}
+input{width:90%;padding:6px;margin-bottom:10px;}
+#qrcode{margin-top:20px;background:white;padding:10px;width:130px;}
+</style>
+</head>
+<body>
+
+<div id="menu" class="sidebar">
+<h2>📁 Документы</h2>
+<input type="text" id="search" placeholder="Поиск" onkeyup="filterFiles()">
+<div id="file-list"></div>
+</div>
+
+<div class="content">
+<button onclick="toggle()">☰ Меню</button>
+<h1>Сайт документов</h1>
+<h3>QR код сайта:</h3>
+<div id="qrcode"></div>
+</div>
+
+<script>
+// Массив всех файлов
+const files = [
+"Аралык тест.docx",
+"Голласарии.docx",
+"Дис мат лек 1.docx",
+"Дис мат лек 2.docx",
+"Дис мат лек 3.docx",
+"Дис мат лек 4.docx",
+"дис мат прак 1.docx",
+"Дис матпрак5.docx",
+"Дисциплина анкетасы.docx",
+"Дисциплина аннотациясы окутуучунун анкетасы.docx",
+"Жыйынтык текшерүү.docx",
+"Силлабус.docx",
+"Содержание.docx",
+"СӨАИ методикалык колдонмо.docx",
+"Стандарт 25-26.docx",
+"Учурдук текшерүү.docx",
+"ФОС2025.docx",
+"Электронндук материалдар.docx"
+];
+
+const fileList = document.getElementById("file-list");
+
+// Отображение файлов
+function displayFiles(list){
+  fileList.innerHTML="";
+  list.forEach(f=>{
+    const div=document.createElement("div");
+    div.className="file";
+    div.innerHTML=`
+      📄 ${f}<br>
+      <a href="${f}" target="_blank"><button>Открыть</button></a>
+      <a href="${f}" download><button>Скачать</button></a>
+    `;
+    fileList.appendChild(div);
+  });
+}
+
+// Фильтр поиска
+function filterFiles(){
+  const query=document.getElementById('search').value.toLowerCase();
+  Array.from(fileList.children).forEach(div=>{
+    div.style.display=div.innerText.toLowerCase().includes(query)?"block":"none";
+  });
+}
+
+// Кнопка меню
+function toggle(){ document.getElementById("menu").classList.toggle("hidden"); }
+
+// Генерация QR-кода
+new QRCode(document.getElementById("qrcode"),{
+  text: window.location.href,
+  width:120,
+  height:120
+});
+
+// Инициализация
+displayFiles(files);
+</script>
+
+</body>
+</html>
